@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { User } from '../types';
+import { API_CONFIG } from '../config/api';
 
 interface UserState {
   users: User[];
@@ -14,7 +15,7 @@ export const useUserStore = create<UserState>((set) => ({
   
   fetchUsers: async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/users');
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/users`);
       if (!response.ok) throw new Error('Failed to fetch users');
       const users = await response.json();
       set({ users });
@@ -26,7 +27,7 @@ export const useUserStore = create<UserState>((set) => ({
 
   createUser: async (userData) => {
     try {
-      const response = await fetch('http://localhost:3001/api/users', {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData),
@@ -42,7 +43,7 @@ export const useUserStore = create<UserState>((set) => ({
 
   updateUser: async (user) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/users/${user.id}`, {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/users/${user.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(user),
@@ -60,7 +61,7 @@ export const useUserStore = create<UserState>((set) => ({
 
   deleteUser: async (userId) => {
     try {
-      const response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+      const response = await fetch(`${API_CONFIG.BASE_URL}/api/users/${userId}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete user');

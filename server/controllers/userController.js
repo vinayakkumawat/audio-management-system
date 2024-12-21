@@ -95,3 +95,32 @@ export const deleteUser = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete user' });
   }
 };
+
+export const loginUser = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Username and password are required' });
+    }
+
+    const user = await getUser(username);
+    if (!user) {
+      logger.warn(`Login attempt failed: User not found - ${username}`);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const isValidPassword = await bcrypt.compare(password, user.password);
+    if (!isValidPassword) {
+      logger.warn(`Login attempt failed: Invalid password - ${username}`);
+      return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    const { password: _, ...userWithoutPassword } = user;
+    logger.info(`User logged in successfully: ${username}`);
+    res.json({ user: userWithoutPassword });
+  } catch (error) {
+    logger.error('Login error:', error);
+    res.status(500).json({ error: 'Login failed' });
+  }
+};

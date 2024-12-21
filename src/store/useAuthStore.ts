@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { API_CONFIG } from '../config/api';
 
 interface Admin {
   id: string;
@@ -28,7 +29,7 @@ export const useAuthStore = create<AuthState>()(
 
       login: async (username: string, password: string) => {
         try {
-          const response = await fetch('http://localhost:3001/api/auth/login', {
+          const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
@@ -59,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
 
       updateProfile: async (data) => {
         try {
-          const response = await fetch('http://localhost:3001/api/auth/profile', {
+          const response = await fetch(`${API_CONFIG.BASE_URL}/api/auth/profile`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ export const useAuthStore = create<AuthState>()(
 
           if (data.username) {
             set((state) => ({
-              admin: state.admin ? { ...state.admin, username: data.username } : null,
+              admin: state.admin ? { ...state.admin, username: data.username || state.admin.username } : null,
             }));
           }
         } catch (error) {

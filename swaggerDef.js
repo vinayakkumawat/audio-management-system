@@ -1,3 +1,5 @@
+const SERVER_URL = 'http://localhost:3001';
+
 export default {
   openapi: '3.0.0',
   info: {
@@ -7,7 +9,7 @@ export default {
   },
   servers: [
     {
-      url: 'http://localhost:3001',
+      url: SERVER_URL,
       description: 'Development server'
     }
   ],

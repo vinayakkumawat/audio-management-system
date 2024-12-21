@@ -1,8 +1,6 @@
 export const corsConfig = {
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://yourdomain.com'] 
-    : ['http://localhost:5173'],
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: '*', // Allow all origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], // Allow all methods
   allowedHeaders: [
     'Content-Type',
     'Authorization',
